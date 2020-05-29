@@ -12,7 +12,7 @@
 
 @implementation RNQuickLookManager
 
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE(RNQuickLook)
 
 - (UIView *) view  {
     return [[RNQuickLookView alloc] init];
