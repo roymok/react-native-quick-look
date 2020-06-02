@@ -60,6 +60,25 @@
     [self.previewCtrl refreshCurrentPreviewItem];
 }
 
+- (void)setBase64:(NSDictionary*)dict {
+    NSString* base64String = dict[@"base64"];
+    NSString* name = dict[@"fileName"];
+    NSString* type = dict[@"fileType"];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"data:application/octet-stream;base64,%@", base64String]];
+    
+    NSData* data = [NSData dataWithContentsOfURL:url];
+    
+    NSString* fileName = [NSString stringWithFormat:@"%@%@%@", name, @".", type];
+    
+    NSString* tempPath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+    NSURL* tempFileUrl = [[NSURL alloc] initFileURLWithPath:tempPath];
+    [data writeToURL:tempFileUrl atomically:YES];
+    
+    _url = tempFileUrl.absoluteString;
+    [self.previewCtrl refreshCurrentPreviewItem];
+}
+
 #pragma mark - QLPreviewControllerDataSource
 
 - (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller {
